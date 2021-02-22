@@ -94,9 +94,8 @@ function updateMovie(req, res , next ){
     var title = req.body.title;
     var director = req.body.director;
     var year = parseInt(req.body.year);
-    var movie = new Movie({title:title , director:director, year:year});
 
-    movie.update({_id:movieId},{$set:{
+    Movie.update({_id:movieId},{$set:{
             title : title,
             director:director,
             year: year
