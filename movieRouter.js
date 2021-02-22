@@ -12,6 +12,9 @@ router.get('/movies/:movieId',showMovieDetail);
 //add Movie
 router.post('/movies' , addMovie);
 
+//update Movie
+router.post('/movies/:movieId' , updateMovie);
+
 //DeleteMovie
 router.delete('/movies/:movieId',deleteMovie);
 
@@ -75,6 +78,29 @@ function addMovie(req, res , next ){
 
     var movie = new Movie({title:title , director:director, year:year});
     movie.save((err,doc) =>{
+        if(err){
+            err.code = 500
+            next(err);
+        }
+        else{
+            console.log(doc);
+            res.send({msg:'success'});
+        }
+    });
+}
+
+function updateMovie(req, res , next ){
+    var movieId = req.params.movieId;
+    var title = req.body.title;
+    var director = req.body.director;
+    var year = parseInt(req.body.year);
+    var movie = new Movie({title:title , director:director, year:year});
+
+    movie.update({_id:movieId},{$set:{
+            title : title,
+            director:director,
+            year: year
+        }},(err,doc) =>{
         if(err){
             err.code = 500
             next(err);
