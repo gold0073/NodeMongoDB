@@ -22,14 +22,16 @@ var MovieScema = mongoose.Schema({
 
 var Movie = mongoose.model('Movie',MovieScema);
 
-//////////////////////// 1
+module.exports = Movie;
+
+
+/* Create Type 3 
+//  type1
 var movie1 = new Movie({
     title       :   '인터스텔라' ,
     director    :   '크리스터퍼 놀란',
     year        :   2004
 });
-
-/*
 movie1.save(function(err,result,rows){
     if(err){
         console.error('Error:', err);
@@ -39,14 +41,14 @@ movie1.save(function(err,result,rows){
     }
 });
 
-//////////////////////// 2
+//type2
 Movie.create({title:'아바타' ,director:'제임스 카메론',year:2010}).then(function fulfilled(result){
     console.log('Success:',result);
 }, function rejected(err){
     console.error('Error:' , err);
 });
 
-//////////////////////// 3
+//type3
 Movie.create({title:'스타워즈' ,director:'조지 루카스',year:1977}), function(err,result) {
     if(err){
         console.error('Error:' ,err);
