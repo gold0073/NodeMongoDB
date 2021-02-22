@@ -2,10 +2,18 @@ var express = require('express');
 var Movie = require('./movieModel');
 var router = express.Router();
 
+//Search list
 router.get('/movies', showMovieList);
 router.get('/movies2', showMovieList2);
 
-//router.get('/Movie/:movieId',showMovieDetail);
+//Search Id
+router.get('/movies/:movieId',showMovieDetail);
+
+//add Movie
+router.post('/movies' , addMovie);
+
+//DeleteMovie
+router.delete('/movies/:movieId',deleteMovie);
 
 //Find Type1
 function showMovieList(req,res,next){
@@ -42,5 +50,55 @@ function showMovieList2(req,res,next){
         } 
     });
 }
+
+///////////////////////
+function showMovieDetail(req,res,next){
+    var movieId = req.params.movieId;
+    Movie.findById(movieId).exec((err,doc)=>{
+        if(err){
+            err.code = 500;
+            next(err);
+        }
+        else
+        {
+            console.log('Success : ');
+            res.send(doc);
+        } 
+    });
+}
+
+
+function addMovie(req, res , next ){
+    var title = req.body.title;
+    var director = req.body.director;
+    var year = parseInt(req.body.year);
+
+    var movie = new Movie({title:title , director:director, year:year});
+    movie.save((err,doc) =>{
+        if(err){
+            err.code = 500
+            next(err);
+        }
+        else{
+            console.log(doc);
+            res.send({msg:'success'});
+        }
+    });
+}
+
+function deleteMovie(req , res , next){
+    var movieId = req.params.movieId;
+    Movie.remove({_id:movieId}).exec((err, doc)=>{
+        if(err){
+            err.code = 500;
+            next(err)
+        }
+        else{
+            console.log(doc);
+            res.send({msg:'success'});
+        }
+    });
+}
+
 
 module.exports = router;
